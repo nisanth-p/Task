@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Task</string>
+    <!--error messages-->
+    <string name="error_no_daata">No Data Available 😓</string>
+    <string name="error_internet_connetion">No Internet Connection 😓</string>
+    <string name="some_error">ERROR</string>
+    <string name="cont_des_back_arrow">back nav</string>
+</resources>
