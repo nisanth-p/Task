@@ -22,60 +22,16 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.coroutines.coroutineContext
 
-private const val TAG = "HomeViewModel"
+private const val TAG = "xxxHomeViewModel"
 @DelicateCoroutinesApi
 @HiltViewModel
 class HomeViewModel @Inject constructor(private val apiService: ApiService,private val repository: CommonRepository,override val networkHelper: NetworkHelper) : BaseViewModel(networkHelper) {
 
-    fun getImages(language:String ,page:Int){
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.getImages(language,page).let {
-                if (it != null) {
-                    if (it.isSuccessful) {
-                        Log.d(TAG, "getUserImage: IfSuccess => $it")
-                        _res.postValue(Resource.success(it.body()))
-
-                    }else{
-                        Log.i(TAG, "getUserImage: elseFail = ${it.errorBody().toString()}")
-                        _res.postValue(Resource.error(it.errorBody().toString(), null))
-                    }
-                }
-            }
-        }
-    }
-
-    suspend fun getAllImages(language:String ,page:Int):Flow<PagingData<DataItem>>{
-
-          return    repository.getAllImages(language)
-            .map { pagingData ->
-                pagingData.map {
-                    Log.d(TAG, "getAllImages: "+it)
-                    //_res.postValue(Resource.success(it))
-                     it
-
-                }
-            }
-            .cachedIn(viewModelScope)
-    }
-/*fun gets():Flow<PagingData<DataItem>>{
-
-        Pager(PagingConfig(pageSize = 6)) {
-          return@Pager  ImagePagingSource(apiService,"1")
-        }.flow.cachedIn(viewModelScope)
-
-
-}*/
     val imagesList =   Pager(PagingConfig(pageSize = 6)) {
-        ImagePagingSource(apiService,"1")
+        ImagePagingSource(apiService,str.value!!)
     }.flow.cachedIn(viewModelScope)
+    var _str = MutableLiveData<String>("1")
 
-    private val _res = MutableLiveData<Resource<UserPages>>()
-
-    val res: LiveData<Resource<UserPages>>
-        get() = _res
-
-    private val _resList = MutableLiveData<Resource<UserPages>>()
-
-    val resList: LiveData<Resource<UserPages>>
-        get() = _resList
+    val str: LiveData<String>
+        get() = _str
 }

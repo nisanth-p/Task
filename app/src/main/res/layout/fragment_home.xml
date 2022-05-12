@@ -3,11 +3,67 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.ui.fragment.home.HomeFragment">
-
-  <androidx.recyclerview.widget.RecyclerView
-      android:id="@+id/recyclerview"
+  <androidx.constraintlayout.widget.ConstraintLayout
       android:layout_width="match_parent"
-      android:layout_height="match_parent"/>
+      android:layout_height="match_parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/CL_Progressbar2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="visible"
+        >
+      <ProgressBar
+          android:id="@+id/progress_circular2"
+          android:layout_width="130dp"
+          android:layout_height="130dp"
+          android:indeterminate="true"
+          android:progressDrawable="@drawable/progress_drawable"
+          android:indeterminateDrawable="@drawable/progress_drawable"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent" />
+      <TextView
+          android:id="@+id/text_view_progress2"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:textAppearance="@style/TextAppearance.AppCompat.Large"
+          app:layout_constraintBottom_toBottomOf="@+id/progress_circular2"
+          app:layout_constraintEnd_toEndOf="@+id/progress_circular2"
+          app:layout_constraintStart_toStartOf="@+id/progress_circular2"
+          app:layout_constraintTop_toTopOf="@+id/progress_circular2"
+          android:text="Loading..."
+          android:textColor="@color/teal_200"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible"/>
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+    android:id="@+id/fab_select"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center|bottom"
+      android:layout_marginBottom="8dp"
+      android:contentDescription="@string/app_name"
+      app:backgroundTint="#EC9D00"
+
+      android:elevation="8dp"
+      android:fadingEdge="horizontal"
+      app:srcCompat="@drawable/ic_baseline_group_add_24"
+      android:tintMode="multiply"
+      android:foregroundTint="@color/white"
+      android:tint="@color/white"
+      app:rippleColor="@color/purple_500" />
 
 </FrameLayout>

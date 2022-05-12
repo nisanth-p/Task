@@ -1,30 +1,34 @@
 package com.triangle.task.view.ui.fragment.home
 
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.triangle.task.R
-import com.triangle.task.data.model.pages.UserPages
 import com.triangle.task.databinding.FragmentHomeBinding
 import com.triangle.task.view.base.BaseFragment
 import com.triangle.task.view.ui.fragment.home.paging.ImageAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.collectLatest
 import kotlin.coroutines.CoroutineContext
+
+private const val TAG = "xxxHomeFragment"
+
 @DelicateCoroutinesApi
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), CoroutineScope {
     private lateinit var imageAdapter: ImageAdapter
-    private var adapter: ImageAdapter? = null
+
+
     companion object {
         fun newInstance() = HomeFragment()
     }
+
     val viewModel by viewModels<HomeViewModel>()
     override fun getViewModels(): HomeViewModel = viewModel
     override fun getLifeCycleOwner(): LifecycleOwner = this
@@ -33,37 +37,57 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), Corouti
     private val job = Job()
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
+    private var globalLaunch: Job? = null
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentHomeBinding
         get() = FragmentHomeBinding::inflate
 
-    val map:HashMap<String,String> = hashMapOf()
+    val map: HashMap<String, String> = hashMapOf()
     override fun setup() {
         viewbinding = binding
-        bindViews()
-        collectUiState()
+        viewbinding!!.CLProgressbar2.visibility = View.VISIBLE
+        lifecycleScope.launch { bindViews() }
+        lifecycleScope.launch { collectUiState() }
+
     }
+
     private fun bindViews() {
-        imageAdapter=ImageAdapter(ImageAdapter.ImageDiffCallBack)
+        imageAdapter = ImageAdapter(context, sharedModel, ImageAdapter.ImageDiffCallBack)
         viewbinding!!.recyclerview.apply {
             layoutManager = LinearLayoutManager(activity)
-            val decoration = DividerItemDecoration(activity, DividerItemDecoration.VERTICAL)
-            addItemDecoration(decoration)
             setHasFixedSize(true)
             adapter = imageAdapter
-
         }
+
+        viewbinding!!.fabSelect.setOnClickListener {
+            if (sharedModel.imagelist.value?.isNotEmpty() == true && sharedModel.imagelist.value?.size != 0)
+                nav(R.id.action_homeFragment_to_selectedImageFragment)
+        }
+
     }
 
     private fun collectUiState() {
-           // viewModel.getImages("en_US",1)
-        lifecycleScope.launch(Dispatchers.IO) {
-           /* viewModel.getAllImages("en_US",1).collectLatest { movies ->
-                imageAdapter.submitData(movies )
-            }*/
-            viewModel.imagesList.collect {
-                imageAdapter.submitData(it)
+        globalLaunch = GlobalScope.launch(coroutineContext) {
+
+           launch { viewModel._str.value = getFileFromAsset("resDemo.json", context) }
+            launch {
+                viewModel.imagesList.collect {
+                    try {
+                        imageAdapter.submitData(it)
+                    } catch (e: Exception) {
+                        Log.d(TAG, "collectUiState: " + e.message)
+                    }
+                }
             }
         }
+        viewbinding!!.CLProgressbar2.visibility = View.GONE
+    }
+
+    override fun onDestroy() {
+        viewbinding = null
+        job.cancel()
+        globalLaunch?.cancel()
+        super.onDestroy()
+
     }
 
 }

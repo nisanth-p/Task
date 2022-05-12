@@ -5,4 +5,9 @@
     <string name="error_internet_connetion">No Internet Connection 😓</string>
     <string name="some_error">ERROR</string>
     <string name="cont_des_back_arrow">back nav</string>
+    <string name="textCancel">Cancel</string>
+    <string name="textClose">Close</string>
+    <string name="textOk">OK</string>
+    <string name="textYes">Yes</string>
+    <string name="textNo">No</string>
 </resources>

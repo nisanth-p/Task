@@ -11,9 +11,11 @@ import com.triangle.task.data.db.remote.RemoteDataStoreImpl
 import com.triangle.task.data.db.repository.CommonRepository
 import com.triangle.task.data.db.repository.ImageRepositoryImpl
 import com.triangle.task.data.db.source.CommonDataSource
+import com.triangle.task.data.model.pages.DataItem
 import com.triangle.task.data.utill.IPref
 import com.triangle.task.data.utill.PrefImpl
 import com.triangle.task.data.utill.UrlConstants
+import com.triangle.task.view.ui.fragment.select.adapter.SelectAdapter
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -106,7 +108,11 @@ object AppModule {
     @Singleton
     fun provideApiService(retrofit: Retrofit): ApiService = retrofit.create(ApiService::class.java)
 
+    @Provides
+    fun provideEmptyList(): List<DataItem> = emptyList()
 
+    @Provides
+    fun provideSelectAdapter(list: List<DataItem>): SelectAdapter = SelectAdapter(list)
 }
 @Module
 @InstallIn(SingletonComponent::class)
