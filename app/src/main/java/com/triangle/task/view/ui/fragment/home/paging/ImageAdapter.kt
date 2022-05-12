@@ -6,6 +6,8 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
+import coil.transform.RoundedCornersTransformation
 import com.triangle.task.data.model.pages.DataItem
 import com.triangle.task.data.model.pages.UserPages
 import com.triangle.task.databinding.LayoutShowingImageBinding
@@ -49,6 +51,10 @@ class ImageViewHolder(
     path?.let {
       Log.d(TAG, "bind: ")
       binding.TVText.text = path.email
+      binding.IMIcon.load("https://image.tmdb.org/t/p/w500/${path.avatar}") {
+        crossfade(durationMillis = 1500)
+        transformations(RoundedCornersTransformation(12.5f))
+      }
     }
   }
 }
