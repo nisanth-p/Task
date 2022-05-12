@@ -61,6 +61,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), Corouti
         viewbinding!!.fabSelect.setOnClickListener {
             if (sharedModel.imagelist.value?.isNotEmpty() == true && sharedModel.imagelist.value?.size != 0)
                 nav(R.id.action_homeFragment_to_selectedImageFragment)
+            else  showSnackBar("Please Select it... ")
         }
 
     }

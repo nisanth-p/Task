@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
 import androidx.annotation.LayoutRes
@@ -19,6 +20,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import com.triangle.task.R
 import com.triangle.task.data.utill.NetworkHelper
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -191,6 +193,19 @@ abstract class BaseFragment<VB : ViewBinding, VM : BaseViewModel> : Fragment() {
 
             }
             .show()
+    }
+    fun showSnackBar(message: String) {
+        val snackbar = activity?.let {
+            Snackbar.make(
+                it.findViewById(android.R.id.content),
+                message, Snackbar.LENGTH_SHORT
+            )
+        }
+        val sbView = snackbar?.view
+        val textView = sbView
+            ?.findViewById<View>(com.google.android.material.R.id.snackbar_text) as TextView
+        textView.setTextColor(ContextCompat.getColor(requireActivity(), R.color.white))
+        snackbar.show()
     }
 }
 
