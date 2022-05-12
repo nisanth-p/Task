@@ -1,6 +1,5 @@
 package com.triangle.task.view.base
 
-import androidx.annotation.IdRes
 import androidx.navigation.NavController
 
 
