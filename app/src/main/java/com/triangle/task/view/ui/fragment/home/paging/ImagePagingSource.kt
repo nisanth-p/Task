@@ -12,7 +12,7 @@ import retrofit2.Response
 import java.io.IOException
 import javax.inject.Inject
 
-private const val TMDB_STARTING_PAGE_INDEX = 1
+
 private const val TAG = "xxxImagePagingSource"
 
 class ImagePagingSource(
