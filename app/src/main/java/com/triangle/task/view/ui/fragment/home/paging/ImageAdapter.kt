@@ -68,10 +68,10 @@ class ImageViewHolder(
       Log.d(TAG, "bind: ")
       binding.TVText.text = path.email
       val radius: Float = binding.root.resources.getDimension(R.dimen.default_corner_radius)
-      binding.IMIcon.shapeAppearanceModel = binding.IMIcon.shapeAppearanceModel
+ /*     binding.IMIcon.shapeAppearanceModel = binding.IMIcon.shapeAppearanceModel
         .toBuilder()
         .setAllCorners(CornerFamily.ROUNDED, radius)
-        .build()
+        .build()*/
       binding.IMIcon.load(path.avatar) {
         crossfade(durationMillis = 1000)
         transformations(RoundedCornersTransformation(12.5f))
