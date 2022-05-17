@@ -26,6 +26,7 @@ class ImagePagingSource(
             val nextPageNumber = params.key ?: 1
 
              try {
+                 Log.d(TAG, "**********NextPage: " + nextPageNumber)
                 response = service.getImages(nextPageNumber)
             }catch (e:Exception) {
 
@@ -46,7 +47,7 @@ class ImagePagingSource(
             Log.d(TAG, "**********load #######: " + res)
             return LoadResult.Page(
                 data = res,
-                prevKey = prevKey,
+                prevKey = null,
                 nextKey = nextPageNumber.plus(1)
             )
         } catch (exception: IOException) {
