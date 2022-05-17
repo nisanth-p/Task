@@ -10,7 +10,12 @@ import com.triangle.task.data.db.repository.ImageRepositoryImpl
 import com.triangle.task.data.db.source.CommonDataSource
 import com.triangle.task.data.model.pages.DataItem
 import com.triangle.task.data.utill.UrlConstants
+import com.triangle.task.data.utill.impl.IPref
+import com.triangle.task.data.utill.impl.IRes
+import com.triangle.task.data.utill.impl.PrefImpl
+import com.triangle.task.data.utill.impl.ResImpl
 import com.triangle.task.view.ui.fragment.select.adapter.SelectAdapter
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -104,4 +109,16 @@ object AppModule {
 
     @Provides
     fun provideSelectAdapter(list: List<DataItem>): SelectAdapter = SelectAdapter(list)
+}
+@Module
+@InstallIn(SingletonComponent::class)
+
+abstract class ResourceWrapperModule {
+    @Singleton
+    @Binds
+    abstract fun bindResImpl(resImpl: ResImpl): IRes
+
+    @Singleton
+    @Binds
+    abstract fun bindPrefImpl(prefImpl: PrefImpl): IPref
 }

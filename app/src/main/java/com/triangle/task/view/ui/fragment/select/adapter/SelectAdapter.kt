@@ -1,11 +1,13 @@
 package com.triangle.task.view.ui.fragment.select.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import coil.transform.CircleCropTransformation
 import coil.transform.RoundedCornersTransformation
 import com.triangle.task.data.model.pages.DataItem
 import com.triangle.task.databinding.LayoutSelectedImageBinding
@@ -16,13 +18,17 @@ class SelectAdapter @Inject constructor(list: List<DataItem>):
     RecyclerView.Adapter<SelectAdapter.MyViewHolder>() {
     inner class MyViewHolder(private val binding: LayoutSelectedImageBinding) :
         RecyclerView.ViewHolder(binding.root) {
+        @SuppressLint("SetTextI18n")
         fun bind(roomItem: DataItem) {
-            binding.TVText.text = roomItem.email
+            binding.TVText.text = "ID : "+roomItem.id.toString()
+            binding.TVName.text = "Name : "+roomItem.firstName+roomItem.lastName
+            binding.TVEmail.text = "Email : "+roomItem.email.toString()
             binding.IMIcon.load(roomItem.avatar) {
                 crossfade(durationMillis = 1500)
                 transformations(RoundedCornersTransformation(12.5f))
-
+                transformations(CircleCropTransformation())
             }
+
         }
     }
 

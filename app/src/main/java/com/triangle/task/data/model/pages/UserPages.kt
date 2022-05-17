@@ -61,4 +61,10 @@ data class DataItem(
     @SerializedName("avatar")
     @Json(name = "avatar")
     val avatar: String,
+
+  /*  @Json(name = "position")
+    var position: Int,
+
+    @Json(name = "isChecked")
+    var isChecked: Boolean*/
 )

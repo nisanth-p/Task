@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.triangle.task.R
+import com.triangle.task.data.utill.SharedPrefKey
 import com.triangle.task.databinding.FragmentHomeBinding
 import com.triangle.task.view.base.BaseFragment
 import com.triangle.task.view.ui.fragment.home.paging.ImageAdapter
@@ -37,7 +38,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), Corouti
 
     override fun setup() {
         viewbinding = binding
-        viewbinding!!.CLProgressbar2.visibility = View.VISIBLE
+       viewbinding!!.CLProgressbar2.visibility = View.VISIBLE
         lifecycleScope.launch { bindViews() }
         lifecycleScope.launch { collectUiState() }
 
@@ -53,8 +54,21 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), Corouti
 
         viewbinding!!.fabSelect.setOnClickListener {
             if (sharedModel.imagelist.value?.isNotEmpty() == true && sharedModel.imagelist.value?.size != 0)
+            {
+                viewModel.sharedPref.put(SharedPrefKey.IMAGE_STATUS, "")
                 nav(R.id.action_homeFragment_to_selectedImageFragment)
+            }
             else  showSnackBar("Please Select it... ")
+        }
+
+        viewModel.showProgress.observe(viewLifecycleOwner){
+            if (it){
+
+                 viewbinding!!.CLProgressbar2.visibility = View.VISIBLE
+            }else{
+
+               viewbinding!!.CLProgressbar2.visibility = View.GONE
+            }
         }
 
     }
@@ -65,13 +79,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), Corouti
                 viewModel.imagesList.collect {
                     try {
                         imageAdapter.submitData(it)
+
                     } catch (e: Exception) {
                         Log.d(TAG, "collectUiState: " + e.message)
                     }
                 }
             }
+
         }
-        viewbinding!!.CLProgressbar2.visibility = View.GONE
+
     }
 
     override fun onDestroy() {

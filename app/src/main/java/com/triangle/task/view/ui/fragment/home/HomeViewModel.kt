@@ -18,7 +18,7 @@ private const val TAG = "xxxHomeViewModel"
 @HiltViewModel
 class HomeViewModel @Inject constructor(private val apiService: ApiService,private val repository: CommonRepository,override val networkHelper: NetworkHelper) : BaseViewModel(networkHelper) {
 
-    val imagesList =   Pager(PagingConfig(pageSize =1)) {
-        ImagePagingSource(apiService)
+    val imagesList =   Pager(PagingConfig(pageSize =6)) {
+        ImagePagingSource(apiService,this)
     }.flow.cachedIn(viewModelScope)
 }
