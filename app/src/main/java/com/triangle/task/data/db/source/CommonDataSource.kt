@@ -7,6 +7,5 @@ import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 
 interface CommonDataSource {
-     suspend fun getImages(language:String ,page:Int): Response<UserPages>?
      suspend fun getAllImages(language:String): Flow<PagingData<DataItem>>
 }

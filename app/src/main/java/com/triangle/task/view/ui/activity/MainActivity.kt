@@ -32,11 +32,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, BaseViewModel>(),
 
     override fun layoutRes(): Int = R.layout.activity_main
     override fun findNavControl() = findNavHostFragment()?.findNavController()
-    override fun hideNavigation(animate: Boolean) {
-    }
-
-    override fun showNavigation(animate: Boolean) {
-    }
 
     private fun setupBackPressed() {
         val dispatcher = onBackPressedDispatcher
@@ -56,9 +51,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, BaseViewModel>(),
                             }
                         }
                     }
-
             }
-
  }
 
 

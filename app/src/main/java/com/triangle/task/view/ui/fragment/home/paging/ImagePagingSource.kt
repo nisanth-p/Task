@@ -17,7 +17,6 @@ private const val TAG = "xxxImagePagingSource"
 
 class ImagePagingSource(
     private val service: ApiService,
-    private val query: String
 ) : PagingSource<Int, DataItem>() {
     @Inject
     lateinit var gson: Gson

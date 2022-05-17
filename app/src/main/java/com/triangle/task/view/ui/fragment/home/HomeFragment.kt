@@ -23,12 +23,6 @@ private const val TAG = "xxxHomeFragment"
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), CoroutineScope {
     private lateinit var imageAdapter: ImageAdapter
-
-
-    companion object {
-        fun newInstance() = HomeFragment()
-    }
-
     val viewModel by viewModels<HomeViewModel>()
     override fun getViewModels(): HomeViewModel = viewModel
     override fun getLifeCycleOwner(): LifecycleOwner = this
@@ -41,7 +35,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), Corouti
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentHomeBinding
         get() = FragmentHomeBinding::inflate
 
-    val map: HashMap<String, String> = hashMapOf()
     override fun setup() {
         viewbinding = binding
         viewbinding!!.CLProgressbar2.visibility = View.VISIBLE
@@ -68,8 +61,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), Corouti
 
     private fun collectUiState() {
         globalLaunch = GlobalScope.launch(coroutineContext) {
-
-           launch { viewModel._str.value = getFileFromAsset("resDemo.json", context) }
             launch {
                 viewModel.imagesList.collect {
                     try {

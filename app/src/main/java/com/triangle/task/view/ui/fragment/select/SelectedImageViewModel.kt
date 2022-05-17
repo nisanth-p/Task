@@ -1,6 +1,5 @@
 package com.triangle.task.view.ui.fragment.select
 
-import androidx.lifecycle.ViewModel
 import com.triangle.task.data.db.api.ApiService
 import com.triangle.task.data.db.repository.CommonRepository
 import com.triangle.task.data.utill.NetworkHelper

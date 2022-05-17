@@ -34,10 +34,7 @@ import javax.inject.Inject
 private const val TAG = "BaseFragment"
 @DelicateCoroutinesApi
 abstract class BaseFragment<VB : ViewBinding, VM : BaseViewModel> : Fragment() {
-
-
     val sharedModel: BaseViewModel by activityViewModels()
-    lateinit var observer: BaseLifecycleObserver
     private val _sharedModel get() = sharedModel
     private lateinit var navController: NavController
     protected lateinit var navHostFragment: NavHostFragment
@@ -55,14 +52,6 @@ abstract class BaseFragment<VB : ViewBinding, VM : BaseViewModel> : Fragment() {
     abstract fun layoutRes(): Int
     @Inject
     lateinit var networkHelper: NetworkHelper
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        observer = BaseLifecycleObserver(requireActivity(),requireActivity().activityResultRegistry, networkHelper)
-        lifecycle.addObserver(observer)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -70,7 +59,6 @@ abstract class BaseFragment<VB : ViewBinding, VM : BaseViewModel> : Fragment() {
     ): View? {
         _binding = bindingInflater.invoke(inflater, container, false)
         createNavControl()
-
         return requireNotNull(_binding).root
     }
 
@@ -78,19 +66,10 @@ abstract class BaseFragment<VB : ViewBinding, VM : BaseViewModel> : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setup()
     }
-
-
-
     private fun createNavControl() {
         navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
     }
 
-    fun takeImage(func:(file:Any)->Any) {
-
-        observer.selectImage(){
-            Log.d(TAG, "takeImage: $it")
-            func(it)}
-    }
 
 
     fun nav(id: Int, bundle: Bundle = Bundle.EMPTY) {
@@ -101,11 +80,6 @@ abstract class BaseFragment<VB : ViewBinding, VM : BaseViewModel> : Fragment() {
     private fun findNavControl() =
         (requireActivity() as NavigationHost).findNavControl()
 
-    protected fun hideNavigation(animate: Boolean = true) =
-        (requireActivity() as NavigationHost).hideNavigation(animate)
-
-    protected fun showNavigation(animate: Boolean = true) =
-        (requireActivity() as NavigationHost).showNavigation(animate)
 
     override fun onResume() {
         super.onResume()
@@ -144,38 +118,6 @@ abstract class BaseFragment<VB : ViewBinding, VM : BaseViewModel> : Fragment() {
         _binding = null
         super.onDestroyView()
 
-    }
-    interface Callback {
-        fun onFragmentAttached()
-        fun onFragmentDetached(tag: String)
-    }
-    var bufferReader: BufferedReader? = null
-    var builderContents: StringBuilder = StringBuilder()
-    fun getFileFromAsset(fileName: String, context: Context?): String {
-
-        try {
-            if (context != null) {
-                bufferReader = BufferedReader(InputStreamReader(context.assets.open(fileName)))
-                var mLine: String?
-                while (bufferReader!!.readLine().also { mLine = it } != null) {
-                    //process line
-                    builderContents.append(mLine)
-                }
-            }
-        } catch (e: IOException) {
-            e.printStackTrace()
-            Log.e(TAG, "getFileFromAsset:1 "+e.message )
-            //log the exception
-        } finally {
-            try {
-                bufferReader?.close()
-            } catch (e: IOException) {
-                //log the exception
-                Log.e(TAG, "getFileFromAsset:2 "+e.message )
-            }
-        }
-
-        return builderContents.toString()
     }
 
     private fun showWhatsNewDialog(onBackPressedCallback: OnBackPressedCallback) {

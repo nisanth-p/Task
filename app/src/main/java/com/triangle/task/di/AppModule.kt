@@ -3,20 +3,14 @@ package com.triangle.task.di
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.triangle.task.data.db.api.ApiService
-
 import com.triangle.task.data.db.remote.RemoteDataStoreImpl
 import com.triangle.task.data.db.repository.CommonRepository
 import com.triangle.task.data.db.repository.ImageRepositoryImpl
 import com.triangle.task.data.db.source.CommonDataSource
 import com.triangle.task.data.model.pages.DataItem
-import com.triangle.task.data.utill.IPref
-import com.triangle.task.data.utill.PrefImpl
 import com.triangle.task.data.utill.UrlConstants
 import com.triangle.task.view.ui.fragment.select.adapter.SelectAdapter
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,7 +22,6 @@ import kotlinx.coroutines.SupervisorJob
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Qualifier
@@ -46,7 +39,6 @@ object AppModule {
     @Singleton
     @Provides
     fun provideImageRepositoryImpl(
-
         @RemoteDataSource remote: CommonDataSource,
         ioDispatcher: CoroutineDispatcher
     ): CommonRepository {
@@ -98,7 +90,6 @@ object AppModule {
     @Singleton
     @Provides
     fun provideRetrofit(gson: Gson, okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
-
         .baseUrl(UrlConstants.BASE_APPSCRIPT_URL)
         .addConverterFactory(MoshiConverterFactory.create(ApiService.moshi))
         .client(okHttpClient)
@@ -113,12 +104,4 @@ object AppModule {
 
     @Provides
     fun provideSelectAdapter(list: List<DataItem>): SelectAdapter = SelectAdapter(list)
-}
-@Module
-@InstallIn(SingletonComponent::class)
-
-abstract class ResourceWrapperModule {
-    @Singleton
-    @Binds
-    abstract fun bindPrefImpl(prefImpl: PrefImpl): IPref
 }

@@ -9,20 +9,20 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import coil.transform.CircleCropTransformation
 import coil.transform.RoundedCornersTransformation
+import com.google.android.material.shape.CornerFamily
+import com.triangle.task.R
 import com.triangle.task.data.model.pages.DataItem
 import com.triangle.task.databinding.LayoutShowingImageBinding
 import com.triangle.task.view.base.BaseViewModel
 import kotlinx.coroutines.DelicateCoroutinesApi
 
+
 private const val TAG = "xxxImageAdapter"
 @DelicateCoroutinesApi
 class ImageAdapter(context: Context?,viewModel: BaseViewModel ,diffCallback: DiffUtil.ItemCallback<DataItem>) :
   PagingDataAdapter<DataItem, ImageViewHolder>(diffCallback) {
-
-init {
-
-}
   private val baseViewModel by lazy { viewModel }
 
   val selectImageList = mutableListOf<DataItem>()
@@ -67,9 +67,15 @@ class ImageViewHolder(
     path?.let {
       Log.d(TAG, "bind: ")
       binding.TVText.text = path.email
+      val radius: Float = binding.root.resources.getDimension(R.dimen.default_corner_radius)
+      binding.IMIcon.shapeAppearanceModel = binding.IMIcon.shapeAppearanceModel
+        .toBuilder()
+        .setAllCorners(CornerFamily.ROUNDED, radius)
+        .build()
       binding.IMIcon.load(path.avatar) {
-        crossfade(durationMillis = 1500)
+        crossfade(durationMillis = 1000)
         transformations(RoundedCornersTransformation(12.5f))
+        transformations(CircleCropTransformation())
 
       }
       binding.checkbox.setOnClickListener {
@@ -78,7 +84,7 @@ class ImageViewHolder(
         else
           selectImageList.remove(path)
         Log.d(TAG, "bind: "+path.firstName)
-        Log.d(TAG, "bind: selectImageList ="+selectImageList.toString())
+        Log.d(TAG, "bind: selectImageList =$selectImageList")
         baseViewModel.imagelist.value = selectImageList
       }
     }

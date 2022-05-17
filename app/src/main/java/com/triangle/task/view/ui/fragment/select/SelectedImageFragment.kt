@@ -22,18 +22,12 @@ import kotlin.coroutines.CoroutineContext
 @AndroidEntryPoint
 class SelectedImageFragment(
 
-) : BaseFragment<SelectedImageFragmentBinding, SelectedImageViewModel>(), CoroutineScope {
+) : BaseFragment<SelectedImageFragmentBinding, SelectedImageViewModel>(){
     private lateinit var selectAdapter: SelectAdapter
-    companion object {
-        fun newInstance() = SelectedImageFragment()
-    }
 
     val viewModel by viewModels<SelectedImageViewModel>()
     private var viewbinding: SelectedImageFragmentBinding? = null
-    private val job = Job()
-    override val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Main
-    private var globalLaunch: Job? = null
+
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> SelectedImageFragmentBinding
         get() = SelectedImageFragmentBinding::inflate
 
@@ -51,15 +45,15 @@ class SelectedImageFragment(
 
     private fun bindViews() {
         selectAdapter = SelectAdapter(emptyList())
-        sharedModel.imagelist.value?.let {  selectAdapter.submitList(it)}!!
-        viewbinding!!.recyclerview.apply {
-            layoutManager = LinearLayoutManager(activity)
-            setHasFixedSize(true)
-            adapter = selectAdapter
-
+        sharedModel.imagelist.observe(viewLifecycleOwner) {
+            it.let { selectAdapter.submitList(it) }
         }
+            viewbinding!!.recyclerview.apply {
+                layoutManager = LinearLayoutManager(activity)
+                setHasFixedSize(true)
+                adapter = selectAdapter
 
-
+            }
 
     }
 }
