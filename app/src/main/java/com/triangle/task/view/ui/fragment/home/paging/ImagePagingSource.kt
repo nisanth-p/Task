@@ -1,7 +1,5 @@
 package com.triangle.task.view.ui.fragment.home.paging
 
-import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.google.gson.Gson
@@ -9,7 +7,6 @@ import com.triangle.task.data.db.api.ApiService
 import com.triangle.task.data.model.pages.DataItem
 import com.triangle.task.data.model.pages.UserPages
 import com.triangle.task.view.base.BaseViewModel
-import com.triangle.task.view.ui.fragment.home.HomeViewModel
 import kotlinx.coroutines.DelicateCoroutinesApi
 import retrofit2.HttpException
 import retrofit2.Response
@@ -29,9 +26,7 @@ class ImagePagingSource(
         try {
             var response: Response<UserPages>? = null
             val nextPageNumber = params.key ?: 1
-
              try {
-                 Log.d(TAG, "**********NextPage: " + nextPageNumber)
                 response = service.getImages(nextPageNumber)
             }catch (e:Exception) {
                  viewModel.showProgress.value = true
@@ -54,18 +49,16 @@ class ImagePagingSource(
 
             }
         } catch (exception: IOException) {
-            Log.d(TAG, "load: Error =" + exception.message)
             viewModel.showProgress.value = false
             return LoadResult.Error(exception)
         } catch (exception: HttpException) {
             viewModel.showProgress.value = false
-            Log.d(TAG, "load: Error =" + exception.message())
             return LoadResult.Error(exception)
         }
     }
 
     override fun getRefreshKey(state: PagingState<Int, DataItem>): Int? {
-        Log.d(TAG, "getRefreshKey: ")
+
         viewModel.showProgress.value = false
       return  state.anchorPosition?.let { anchorPosition ->
             state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)

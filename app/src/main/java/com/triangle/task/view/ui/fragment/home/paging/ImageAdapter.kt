@@ -81,14 +81,12 @@ class ImageViewHolder(
     fun bind(path: DataItem?, position: Int) {
 
         path?.let {
-            // binding.checkbox.isChecked = false
             selectImageList.clear()
             binding.TVText.text = path.firstName+path.lastName
             binding.IMIcon.load(path.avatar) {
                 crossfade(durationMillis = 1000)
                 transformations(RoundedCornersTransformation(12.5f))
                 transformations(CircleCropTransformation())
-
             }
             baseViewModel.viewModelScope.coroutineContext.run {
                 try {
@@ -115,7 +113,6 @@ class ImageViewHolder(
 
 
             binding.checkbox.setOnClickListener {
-
                 if ((it as CheckBox).isChecked) {
                     selectImageList.add(path)
                     selectedList.add(Clicked(position, true, selectImageList))
@@ -123,8 +120,6 @@ class ImageViewHolder(
                     selectImageList.remove(path)
                     selectedList.add(Clicked(position, false, selectImageList))
                 }
-
-                Log.d(TAG, "bind: AFTER setOnClickListener => selectedList =$selectedList")
                 mapImageStatus = hashMapOf("data" to selectedList)
                 val gson = Gson()
                 var str = ""

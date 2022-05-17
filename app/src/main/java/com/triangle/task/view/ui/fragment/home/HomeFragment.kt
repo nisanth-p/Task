@@ -79,7 +79,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(), Corouti
                 viewModel.imagesList.collect {
                     try {
                         imageAdapter.submitData(it)
-
                     } catch (e: Exception) {
                         Log.d(TAG, "collectUiState: " + e.message)
                     }

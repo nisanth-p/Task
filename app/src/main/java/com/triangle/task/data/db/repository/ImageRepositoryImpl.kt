@@ -8,7 +8,4 @@ import javax.inject.Inject
 class ImageRepositoryImpl @Inject constructor(
     private val dataSource: CommonDataSource,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO):
-    CommonRepository {
-
-
-}
+    CommonRepository

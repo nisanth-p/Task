@@ -9,8 +9,4 @@ import javax.inject.Inject
 class RemoteDataStoreImpl
     @Inject constructor(private val remote: ApiService,
                         private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO) :
-    CommonDataSource {
-
-
-
-}
+    CommonDataSource
